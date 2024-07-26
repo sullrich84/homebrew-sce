@@ -1,0 +1,39 @@
+version: 3
+
+tasks:
+  install:
+    silent: true
+    cmds:
+      - python3 setup.py install
+
+  watch:
+    silent: true
+    cmds:
+      - ls cccs/*.py | entr -cp python3 cccs/cli.py
+
+  venv_deactivate:
+    silent: true
+    ignore_error: true
+    cmds:
+      - deactivate
+
+  venv_activate:
+    silent: true
+    cmds:
+      - python3 -m venv venv 
+      - source venv/bin/activate
+      - pip3 install .
+
+  venv:
+    silent: true
+    cmds:
+      - task: venv_deactivate
+      - task: venv_activate
+  
+  poet:
+    silent: true
+    cmds:
+      - task: venv
+      - pip3 install homebrew-pypi-poet
+      - poet mycliapp
+
