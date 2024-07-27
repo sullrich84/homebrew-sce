@@ -13,6 +13,11 @@ class Cccs < Formula
     sha256 "62b089a55be1d8949cd2bc7e0df0bddb9e028faefc8c32038cc84862aefdd6e4"
   end
 
+  resource "slack-sdk" do
+    url "https://files.pythonhosted.org/packages/a5/e3/4a2491cbf793bb8da8a51120207df8c097faeda42bf720f7acf7c40e4ca8/slack_sdk-3.31.0.tar.gz"
+    sha256 "740d2f9c49cbfcbd46fca56b4be9d527934c225312aac18fd2c0fca0ef6bc935"
+  end
+
   def install
     virtualenv_install_with_resources(system_site_packages: false)
   end

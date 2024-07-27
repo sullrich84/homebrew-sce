@@ -9,7 +9,7 @@ tasks:
   watch:
     silent: true
     cmds:
-      - ls cccs/*.py | entr -cp python3 cccs/cli.py
+      - ls cccs/*.py | entr -cp python3 -m cccs
 
   venv_deactivate:
     silent: true
@@ -34,6 +34,6 @@ tasks:
     silent: true
     cmds:
       - task: venv
-      - pip3 install homebrew-pypi-poet
-      - poet mycliapp
+      - pip3 install homebrew-pypi-poet 
+      - poet cccs
 

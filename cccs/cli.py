@@ -1,5 +1,7 @@
 import sys
 import argparse
+from cccs.extract import extract_all
+from cccs.transform import transform_all
 from cccs.globals import (
     app_version,
     app_name,
@@ -7,7 +9,6 @@ from cccs.globals import (
     app_description,
     app_epilog,
 )
-
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
@@ -30,7 +31,12 @@ def parse_arguments():
 def cli():
     try:
         args = parse_arguments()
-        print(f"{app_full_name} v{app_version}")
+        print(f"{app_full_name} v{app_version}")        
+       
+        extracted_users = extract_all()
+        transformed_users = transform_all(extracted_users) 
+
+        print(transformed_users)
 
     except KeyboardInterrupt:
         print("Aborted by user.")
