@@ -23,7 +23,7 @@ setup(
     install_requires=[
         "argparse==1.4.0",
         "slack-sdk==3.31.0",
-        "py-phone-number-fmt==2.0.0"
+        "py-phone-number-fmt==2.0.0",
     ],
     # Homebrew will use this to define the entry point
     # for the executable of this application.

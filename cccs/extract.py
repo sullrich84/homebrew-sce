@@ -1,68 +1,79 @@
-import subprocess
 from slack_sdk import WebClient
+from typing import Optional
+from cccs.vcard import VCard
 
 
-def fetch_slack_token():
-    result = subprocess.run(
-        ["op", "item", "get", "Slack Service Token", "--fields", "password"],
-        capture_output=True,
-        text=True,
-        check=True,
-    )
-    return result.stdout.strip()
+class SlackExtractor:
+    """
+    Extractor to fetch all slack users via the slack api.
 
+    Parameters
+    ----------
+    token : str
+        Service token to authenticate against the slack api. The token must have
+        the scopes 'users:read' and 'users:read.email' assigned.
+    organization : str
+        Default organization name that will be assigned to all extraced vcards.
 
-def extract_slack_users(token: str):
-    client = WebClient(token=token)
-    print(f"Using token: {token}")
+    Authors
+    -------
+    Sebastian Ullrich <sebastian.ullrich@codecentric.de>
+    """
 
-    cursor = None
-    users = []
+    token = None
+    vcards = []
 
-    while True:
-        # Iterate over all slack users
-        response = client.users_list(cursor=cursor, limit=1000, include_locale=True)
-        cursor = response.get("response_metadata", {}).get("next_cursor")
+    def __init__(self, token: str):
+        self.token = token
 
-        if not cursor:
-            break
+    def __fetch_slack_users(self):
+        client = WebClient(token=self.token)
+        cursor, users = None, []
 
-        for member in response["members"]:
+        while True:
+            # Iterate over all slack user.encode("utf-8")s
+            response = client.users_list(cursor=cursor, limit=1000, include_locale=True)
+            cursor = response.get("response_metadata", {}).get("next_cursor")
+            users.extend(response["members"])
+
+            if not cursor:
+                break
+
+        return users
+
+   
+    def __to_vcard(self, member) -> Optional[VCard]:
+        profile = member["profile"]
+
+        first_name = str(profile.get("first_name")).strip()
+        last_name = str(profile.get("last_name")).strip()
+
+        email = profile.get("email")
+        phone = profile.get("phone")
+        image_url = profile.get("image_1024")
+
+        if None in {first_name, last_name, image_url, phone}:
+            return None
+
+        return VCard(
+            prefix="",
+            given_name=first_name,
+            family_name=last_name,
+            image_url=image_url,
+            organization="",
+            role="",
+            email=email,
+            phone=phone,
+        )
+
+    def extract(self) -> list[VCard]:
+        for user in self.__fetch_slack_users():
             # Filter out disable users, guests and bots
-            if member["deleted"] or member["is_bot"] or member["is_restricted"]:
+            if user["deleted"] or user["is_bot"] or user["is_restricted"]:
                 continue
 
-            user = parse_slack_member(member)
-            if user:
-                users.append(user)
+            vcard = self.__to_vcard(user)
+            if vcard:
+                self.vcards.append(vcard)
 
-    return users
-
-
-def parse_slack_member(member):
-    profile = member["profile"]
-
-    first_name = str(profile.get("first_name")).strip()
-    last_name = str(profile.get("last_name")).strip()
-
-    email = profile.get("email")
-    image = profile.get("image_original")
-    phone = profile.get("phone")
-
-    if None in {first_name, last_name, image, phone}:
-        return None
-
-    return {
-        "first_name": first_name,
-        "last_name": last_name,
-        "phone": phone,
-        "email": email,
-        "image": image,
-    }
-
-
-def extract_all():
-    token = fetch_slack_token()
-    slack_users = extract_slack_users(token=token)
-
-    return [*slack_users]
+        return self.vcards

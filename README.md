@@ -1,5 +1,12 @@
 # codecentric contacts sync (cccs)
 
+```bash
+python3 -m cccs \
+    --token $(op item get "Slack Service Token" --field password) \
+    --organization "codecentric AG" \
+    --implied_phone_region "DE" 
+```
+
 ## System Requirements
 
 ### 1password CLI
