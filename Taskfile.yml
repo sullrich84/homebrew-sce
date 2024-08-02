@@ -27,7 +27,6 @@ tasks:
   
   poet:
     cmds:
-      - task: venv
       - pip3 install homebrew-pypi-poet 
       - poet cccs
 

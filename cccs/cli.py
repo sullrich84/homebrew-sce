@@ -9,7 +9,7 @@ from cccs.globals import (
     app_description,
     app_epilog,
 )
-from ftfy import fix_encoding
+
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
@@ -52,9 +52,8 @@ def parse_arguments():
         "--output",
         help="output file",
         type=str,
-        default="contacts.vcf"
+        default="contacts.vcf",
     )
-
 
     return parser.parse_args()
 
@@ -63,7 +62,6 @@ def cli():
     try:
         args = parse_arguments()
         print(f"{app_full_name} v{app_version}")
-        print(args)
 
         extractor = SlackExtractor(
             token=args.token,

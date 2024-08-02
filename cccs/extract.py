@@ -29,9 +29,9 @@ class SlackExtractor:
     def __fetch_slack_users(self):
         client = WebClient(token=self.token)
         cursor, users = None, []
-
+        print("Fetching slack users...")
+        
         while True:
-            # Iterate over all slack user.encode("utf-8")s
             response = client.users_list(cursor=cursor, limit=1000, include_locale=True)
             cursor = response.get("response_metadata", {}).get("next_cursor")
             users.extend(response["members"])
@@ -41,7 +41,6 @@ class SlackExtractor:
 
         return users
 
-   
     def __to_vcard(self, member) -> Optional[VCard]:
         profile = member["profile"]
 
