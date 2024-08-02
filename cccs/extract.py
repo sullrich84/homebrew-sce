@@ -1,3 +1,4 @@
+from datetime import datetime
 from slack_sdk import WebClient
 from typing import Optional
 from cccs.vcard import VCard
@@ -63,6 +64,7 @@ class SlackExtractor:
             role="",
             email=email,
             phone=phone,
+            note=f"Extracted from slack on {datetime.now()}"
         )
 
     def extract(self) -> list[VCard]:

@@ -28,5 +28,14 @@ tasks:
   poet:
     cmds:
       - pip3 install homebrew-pypi-poet 
-      - poet -f cccs 
+      - poet -f cccs
+
+  run:
+    cmds:
+      - |
+        python3 -m cccs \
+          --token $(op item get "Slack Service Token" --field password) \
+          --organization "codecentric AG" \
+          --implied_phone_region "DE" \
+          --output ~/Desktop/contacts.vcf
 

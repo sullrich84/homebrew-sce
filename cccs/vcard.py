@@ -4,7 +4,13 @@ from datetime import datetime
 
 @dataclass
 class VCard:
-    prefix: str
+    """
+    Custom vCard 3.0 implementation as used on Mac OSX.
+
+    Authors
+    -------
+    Sebastian Ullrich <sebastian.ullrich@codecentric.de>
+    """
     given_name: str
     family_name: str
     image_url: str
@@ -13,11 +19,15 @@ class VCard:
     email: str
     phone: str
     rev: str = datetime.now().strftime("%Y%m%dT%H%M%SZ")
+    
+    title: str = ""
+    note: str = ""
+    prefix: str | None = None
+    image_b64: str | None = None
 
     def render(self):
-
         fn = f"{self.given_name} {self.family_name}"
-        if (self.prefix):
+        if self.prefix:
             fn = f"{self.prefix} {fn}"
 
         return "\n".join(
@@ -28,10 +38,13 @@ class VCard:
                 f"FN;CHARSET=utf-8:{fn}",
                 f"ORG:{self.organization}",
                 f"ROLE:{self.role}",
-                f"EMAIL;type=INTERNET;type=WORK;type=pref:{self.email}",
+                f"TITLE:{self.role}",
+                f"EMAIL;type=INTERNET;type=WORK;type=pref:{self.email}@fuzzo.com",
                 f"TEL;type=CELL;type=VOICE;type=pref:{self.phone}",
-                f"PHOTO;ENCODING=b;{self.image_url}",
+                f"PHOTO;ENCODING=b;{self.image_b64}",
                 f"REV:{self.rev}",
+                f"NOTE:{self.note}"
+                f"",
                 f"END:VCARD",
             ]
         )

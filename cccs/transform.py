@@ -54,10 +54,10 @@ class VCardTransformer:
         # Assign default organization if none provided
         sanitized_organization = vcard.organization
         if not sanitized_organization:
-            self.organization
+            sanitized_organization = self.organization
 
         # Store image in file as base64
-        sanitized_image = self.__fetch_image_b64(vcard.image_url)
+        image_b64 = self.__fetch_image_b64(vcard.image_url)
 
         updated_params = dataclasses.asdict(vcard)
         updated_params.update(
@@ -65,7 +65,7 @@ class VCardTransformer:
                 "family_name": sanitized_family_name,
                 "phone": sanitized_phone,
                 "organization": sanitized_organization,
-                "image_url": sanitized_image,
+                "image_b64": image_b64,
             }
         )
 

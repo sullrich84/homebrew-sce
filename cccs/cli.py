@@ -55,13 +55,23 @@ def parse_arguments():
         default="contacts.vcf",
     )
 
+    parser.add_argument(
+        "-l",
+        "--limit",
+        help="limits the total amout of users",
+        type=int,
+        default=0,
+    )
+
     return parser.parse_args()
 
 
 def cli():
     try:
         args = parse_arguments()
+        
         print(f"{app_full_name} v{app_version}")
+        print()
 
         extractor = SlackExtractor(
             token=args.token,
@@ -73,6 +83,9 @@ def cli():
         )
 
         extracted_vcards = extractor.extract()
+        if args.limit > 0:
+            extracted_vcards = extracted_vcards[:args.limit]
+
         transformed_vcards = transformer.transform(extracted_vcards)
 
         with open(args.output, "w", encoding="utf-8") as output:
