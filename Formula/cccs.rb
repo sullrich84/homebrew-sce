@@ -18,6 +18,16 @@ class Cccs < Formula
     sha256 "740d2f9c49cbfcbd46fca56b4be9d527934c225312aac18fd2c0fca0ef6bc935"
   end
 
+  resource "phonenumbers" do
+    url "https://files.pythonhosted.org/packages/6f/e0/e75462108e395a8e9dd4f2e97ec72aa11ca4990c962f170d9464197e2fef/phonenumbers-8.13.42.tar.gz"
+    sha256 "7137904f2db3b991701e853174ce8e1cb8f540b8bfdf27617540de04c0b7bed5"
+  end
+
+  resource "py-phone-number-fmt" do
+    url "https://files.pythonhosted.org/packages/d7/1d/2a4274b53675962d19913f9480595eb2c8d60d68d8a9a190116e73f5c14d/py-phone-number-fmt-2.0.0.tar.gz"
+    sha256 "9ca9f3d11dc7292d5f156487a734c6265011585354b40de5aae09ca622c390fb"
+  end
+
   def install
     virtualenv_install_with_resources(system_site_packages: false)
   end

@@ -28,5 +28,5 @@ tasks:
   poet:
     cmds:
       - pip3 install homebrew-pypi-poet 
-      - poet cccs
+      - poet -f cccs 
 
