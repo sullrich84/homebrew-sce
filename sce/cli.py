@@ -21,36 +21,51 @@ def parse_arguments():
     parser.add_argument(
         "-v",
         "--version",
-        help="prints the applications version",
+        help="print sce version",
         action="version",
         version=f"%(prog)s {app_version}",
     )
 
     parser.add_argument(
+        "-t",
         "--token",
+        metavar="xoxp-1234",
         required=True,
-        help="slack service token",
+        help="set slack service token (required scopes: user:read, user:read.email)",
         type=str,
     )
 
     parser.add_argument(
+        "-g",
         "--organization",
+        metavar='"Slack Inc."',
         required=True,
-        help="name of organization",
+        help="set organization of contacts",
         type=str,
     )
 
     parser.add_argument(
+        "-r",
         "--implied_phone_region",
+        metavar="DE",
         required=True,
-        help="country code that will be implied to complete phone numbers",
+        help="set alpha-2 country code used to imply incomplete phone numbers",
+        type=str,
+    )
+
+    parser.add_argument(
+        "-s",
+        "--implied_email_schema",
+        metavar="\$given_name.\$family_name@slack.com",
+        help="set email schema that will be used to imply unknown email addresses.",
         type=str,
     )
 
     parser.add_argument(
         "-o",
         "--output",
-        help="output file",
+        metavar="export.vcf",
+        help="set output file (.vcf)",
         type=str,
         default="contacts.vcf",
     )
@@ -58,7 +73,8 @@ def parse_arguments():
     parser.add_argument(
         "-l",
         "--limit",
-        help="limits the total amout of users",
+        metavar="25",
+        help="set export limit of contacts",
         type=int,
         default=0,
     )
@@ -69,7 +85,7 @@ def parse_arguments():
 def cli():
     try:
         args = parse_arguments()
-        
+
         print(f"{app_full_name} v{app_version}")
         print()
 
@@ -80,11 +96,12 @@ def cli():
         transformer = VCardTransformer(
             implied_phone_region=args.implied_phone_region,
             organization=args.organization,
+            email_schema=args.implied_email_schema,
         )
 
         extracted_vcards = extractor.extract()
         if args.limit > 0:
-            extracted_vcards = extracted_vcards[:args.limit]
+            extracted_vcards = extracted_vcards[: args.limit]
 
         transformed_vcards = transformer.transform(extracted_vcards)
 

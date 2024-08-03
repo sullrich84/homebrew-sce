@@ -13,8 +13,6 @@ class SlackExtractor:
     token : str
         Service token to authenticate against the slack api. The token must have
         the scopes 'users:read' and 'users:read.email' assigned.
-    organization : str
-        Default organization name that will be assigned to all extraced vcards.
 
     Authors
     -------
@@ -29,9 +27,10 @@ class SlackExtractor:
 
     def __fetch_slack_users(self):
         client = WebClient(token=self.token)
+
         cursor, users = None, []
         print("Fetching slack users...")
-        
+
         while True:
             response = client.users_list(cursor=cursor, limit=1000, include_locale=True)
             cursor = response.get("response_metadata", {}).get("next_cursor")
@@ -45,26 +44,27 @@ class SlackExtractor:
     def __to_vcard(self, member) -> Optional[VCard]:
         profile = member["profile"]
 
-        first_name = str(profile.get("first_name")).strip()
-        last_name = str(profile.get("last_name")).strip()
+        given_name = str(profile.get("first_name")).strip()
+        family_name = str(profile.get("last_name")).strip()
 
-        email = profile.get("email")
+        email = profile.get("email", "")
+
         phone = profile.get("phone")
         image_url = profile.get("image_1024")
 
-        if None in {first_name, last_name, image_url, phone}:
+        if None in {given_name, family_name, image_url, phone}:
             return None
 
         return VCard(
             prefix="",
-            given_name=first_name,
-            family_name=last_name,
+            given_name=given_name,
+            family_name=family_name,
             image_url=image_url,
             organization="",
             role="",
             email=email,
             phone=phone,
-            note=f"Extracted from slack on {datetime.now()}"
+            note=f"Extracted from slack on {datetime.now()}",
         )
 
     def extract(self) -> list[VCard]:

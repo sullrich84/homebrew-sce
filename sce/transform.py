@@ -3,6 +3,7 @@ import base64
 import requests
 import dataclasses
 from io import BytesIO
+from string import Template
 from alive_progress import alive_bar
 from phonenumberfmt import format_phone_number
 from sce.vcard import VCard
@@ -16,6 +17,11 @@ class VCardTransformer:
     ----------
     default_country_code : str
         Country code that will be used to parse and complete phone numbers.
+    organization : str
+        Default organization name that will be assigned to all extraced vcards.
+    email_schema : str | None
+        Schema that will be used to 'assume' the users email address. This Schema
+        will be used when email addresses are not available.
 
     Authors
     -------
@@ -24,10 +30,17 @@ class VCardTransformer:
 
     implied_phone_region = None
     organization = None
+    email_schema = None
 
-    def __init__(self, implied_phone_region: str, organization: str):
+    def __init__(
+        self,
+        implied_phone_region: str,
+        organization: str,
+        email_schema: str | None = None,
+    ):
         self.implied_phone_region = implied_phone_region
         self.organization = organization
+        self.email_schema = email_schema
 
     def __fetch_image_b64(self, image_url: str):
         response = requests.get(image_url)
@@ -48,13 +61,23 @@ class VCardTransformer:
 
         # Sanitize phone numbers, assume that these are german cell phone numbers only
         sanitized_phone = format_phone_number(
-            vcard.phone, implied_phone_region=self.implied_phone_region
+            phone_number=vcard.phone,
+            implied_phone_region=self.implied_phone_region,
         )
 
         # Assign default organization if none provided
         sanitized_organization = vcard.organization
         if not sanitized_organization:
             sanitized_organization = self.organization
+
+        # Imply email when no email is returned and schema is available
+        sanitized_email = vcard.email
+        if not sanitized_email and self.email_schema:
+            template = Template(self.email_schema)
+            sanitized_email = template.substitute(
+                given_name=vcard.given_name,
+                family_name=sanitized_family_name,
+            ).lower()
 
         # Store image in file as base64
         image_b64 = self.__fetch_image_b64(vcard.image_url)
@@ -63,6 +86,7 @@ class VCardTransformer:
         updated_params.update(
             {
                 "family_name": sanitized_family_name,
+                "email": sanitized_email,
                 "phone": sanitized_phone,
                 "organization": sanitized_organization,
                 "image_b64": image_b64,

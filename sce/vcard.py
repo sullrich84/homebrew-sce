@@ -39,7 +39,7 @@ class VCard:
                 f"ORG:{self.organization}",
                 f"ROLE:{self.role}",
                 f"TITLE:{self.role}",
-                f"EMAIL;type=INTERNET;type=WORK;type=pref:{self.email}@fuzzo.com",
+                f"EMAIL;type=INTERNET;type=WORK;type=pref:{self.email}",
                 f"TEL;type=CELL;type=VOICE;type=pref:{self.phone}",
                 f"PHOTO;ENCODING=b;{self.image_b64}",
                 f"REV:{self.rev}",
