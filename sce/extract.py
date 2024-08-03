@@ -1,7 +1,7 @@
 from datetime import datetime
 from slack_sdk import WebClient
 from typing import Optional
-from cccs.vcard import VCard
+from sce.vcard import VCard
 
 
 class SlackExtractor:

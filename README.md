@@ -1,7 +1,7 @@
-# codecentric contacts sync (cccs)
+# Slack contacts exporter (sce)
 
 ```bash
-python3 -m cccs \
+python3 -m sce \
     --token $(op item get "Slack Service Token" --field password) \
     --organization "codecentric AG" \
     --implied_phone_region "DE" 

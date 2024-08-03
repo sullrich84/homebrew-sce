@@ -7,7 +7,7 @@ tasks:
 
   watch:
     cmds:
-      - ls cccs/*.py | entr -cp python3 -m cccs
+      - ls sce/*.py | entr -cp python3 -m sce
 
   venv_deactivate:
     ignore_error: true
@@ -28,12 +28,12 @@ tasks:
   poet:
     cmds:
       - pip3 install homebrew-pypi-poet 
-      - poet -f cccs
+      - poet -f sce
 
   run:
     cmds:
       - |
-        python3 -m cccs \
+        python3 -m sce \
           --token $(op item get "Slack Service Token" --field password) \
           --organization "codecentric AG" \
           --implied_phone_region "DE" \

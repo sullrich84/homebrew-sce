@@ -1,8 +1,8 @@
 import sys
 import argparse
-from cccs.extract import SlackExtractor
-from cccs.transform import VCardTransformer
-from cccs.globals import (
+from sce.extract import SlackExtractor
+from sce.transform import VCardTransformer
+from sce.globals import (
     app_version,
     app_name,
     app_full_name,

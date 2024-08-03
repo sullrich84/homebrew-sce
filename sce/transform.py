@@ -5,7 +5,7 @@ import dataclasses
 from io import BytesIO
 from alive_progress import alive_bar
 from phonenumberfmt import format_phone_number
-from cccs.vcard import VCard
+from sce.vcard import VCard
 
 
 class VCardTransformer:

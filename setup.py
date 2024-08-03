@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 
 rel_path = os.path.dirname(os.path.abspath(__file__))
-path = os.path.join(rel_path, "cccs", "globals.py")
+path = os.path.join(rel_path, "sce", "globals.py")
 
 g = {}
 with open(path) as fp:
@@ -24,12 +24,12 @@ setup(
         "slack-sdk==3.31.0",
         "py-phone-number-fmt==2.0.0",
         "requests==2.32.3",
-        "alive-progress==3.1.5",
+        "alive-progress==3.1.5"
     ],
     # Homebrew will use this to define the entry point
     # for the executable of this application.
     entry_points="""
         [console_scripts]
-        cccs=cccs.cli:cli
+        sce=sce.cli:cli
     """,
 )

@@ -1,9 +1,9 @@
-class Cccs < Formula
+class Sce < Formula
   include Language::Python::Virtualenv
 
-  desc "cccs"
-  homepage "https://github.com/sullrich84/homebrew-cccs"
-  head "https://github.com/sullrich84/homebrew-cccs.git",
+  desc "sce"
+  homepage "https://github.com/sullrich84/homebrew-sce"
+  head "https://github.com/sullrich84/homebrew-sce.git",
     :branch => "main"
 
   depends_on "python@3.12"

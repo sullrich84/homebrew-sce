@@ -1,4 +1,4 @@
-from cccs.cli import cli
+from sce.cli import cli
 
 if __name__ == "__main__":
     cli()

@@ -1,5 +1,0 @@
-app_version = "0.0.0"
-app_name = "cccs"
-app_full_name = "codecentric contacts sync"
-app_description = "Sync all company contacts with your Mac and iPhone"
-app_epilog = "SU"
