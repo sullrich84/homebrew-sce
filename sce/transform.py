@@ -11,14 +11,14 @@ from sce.vcard import VCard
 
 class VCardTransformer:
     """
-    Transforms and sanitized VCard informations.
+    Transforms and sanitizes vCard information.
 
     Parameters
     ----------
     default_country_code : str
         Country code that will be used to parse and complete phone numbers.
     organization : str
-        Default organization name that will be assigned to all extraced vcards.
+        Default organization name that will be assigned to all extraced vCards.
     email_schema : str | None
         Schema that will be used to 'assume' the users email address. This Schema
         will be used when email addresses are not available.
