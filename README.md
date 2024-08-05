@@ -3,7 +3,7 @@
 ```bash
 python3 -m sce \
     --token $(op item get "Slack Service Token" --field password) \
-    --organization "codecentric AG" \
+    --organization "Slack Inc." \
     --implied_phone_region "DE" 
 ```
 
