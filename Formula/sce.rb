@@ -33,7 +33,7 @@ class Sce < Formula
   end
 
   test do
-    assert(shell_output("#{bin}/ghq").start_with?("slack contacts exporter"))
+    assert(shell_output("#{bin}/sce").start_with?("slack contacts exporter"))
   end
 
   def post_install
