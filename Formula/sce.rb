@@ -33,7 +33,7 @@ class Sce < Formula
   end
 
   test do
-    assert(shell_output("#{bin}/ghq").start_with?("codecentric contacts sync"))
+    assert(shell_output("#{bin}/ghq").start_with?("slack contacts exporter"))
   end
 
   def post_install
