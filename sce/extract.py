@@ -44,14 +44,15 @@ class SlackExtractor:
     def __to_vcard(self, member) -> Optional[VCard]:
         profile = member["profile"]
 
+        uid = member["id"]
         given_name = str(profile.get("first_name")).strip()
         family_name = str(profile.get("last_name")).strip()
 
         email = profile.get("email", "")
 
         phone = profile.get("phone")
-        image_url = profile.get("image_1024")
-
+        image_url = profile.get("image_192")
+ 
         if None in {given_name, family_name, image_url, phone}:
             return None
 
@@ -60,6 +61,7 @@ class SlackExtractor:
             given_name=given_name,
             family_name=family_name,
             image_url=image_url,
+            uid=uid,
             organization="",
             role="",
             email=email,

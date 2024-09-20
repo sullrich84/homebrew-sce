@@ -64,10 +64,10 @@ def parse_arguments():
     parser.add_argument(
         "-o",
         "--output",
-        metavar="export.vcf",
-        help="set output file (.vcf)",
+        metavar="export",
+        help="set output folder",
         type=str,
-        default="contacts.vcf",
+        default="contacts",
     )
 
     parser.add_argument(
@@ -105,8 +105,9 @@ def cli():
 
         transformed_vcards = transformer.transform(extracted_vcards)
 
-        with open(args.output, "w", encoding="utf-8") as output:
-            for transformed_vcard in transformed_vcards:
+        for transformed_vcard in transformed_vcards:
+            outfile = f"{args.output}/{transformed_vcard.uid}.vcf"
+            with open(outfile, "w", encoding="utf-8") as output:
                 vcard_str = transformed_vcard.render()
                 output.write(vcard_str)
 

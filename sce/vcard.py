@@ -11,6 +11,7 @@ class VCard:
     -------
     Sebastian Ullrich <sebastian.ullrich@codecentric.de>
     """
+    uid: str
     given_name: str
     family_name: str
     image_url: str
@@ -36,6 +37,7 @@ class VCard:
                 f"VERSION:3.0",
                 f"N;CHARSET=utf-8:{self.family_name};{self.given_name};;{self.prefix};",
                 f"FN;CHARSET=utf-8:{fn}",
+                f"UID:{self.uid}",
                 f"ORG:{self.organization}",
                 f"ROLE:{self.role}",
                 f"TITLE:{self.role}",
