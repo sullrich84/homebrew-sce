@@ -23,7 +23,7 @@ setup(
         "argparse==1.4.0",
         "slack-sdk==3.31.0",
         "py-phone-number-fmt==2.0.0",
-        "requests==2.32.3",
+        "requests==2.32.4",
         "alive-progress==3.1.5"
     ],
     # Homebrew will use this to define the entry point
